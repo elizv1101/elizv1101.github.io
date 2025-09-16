@@ -83,10 +83,6 @@ function mouseReport(){
   let src = mouseX +", "+ mouseY +", " + mouseIsPressed;
   textSize(tSize);
   text(src, mouseX, mouseY);
-
-  if (mouseIsPressed){
-    
-  }
 }
 
 function mousePressed(){
