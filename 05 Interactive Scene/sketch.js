@@ -18,21 +18,26 @@ function setup() {
 }
 
 function draw() {
-  background(24, 70, 120);
-
+  background(0, 90, 140);
   moon();
   river();
   building();
+  light();
 }
 
 
-
+// Draw the moon using circle
 function moon(){
-
+  fill(252, 223, 105);
+  circle(x,y, y*1.5);
 }
+
+
+
+// This function draws a river
+// using rectangles
+// There is some gradings to it
 function river(){
-  // This function draws a river. It has a little of
-  // color grading in it.
   noStroke();
   fill(0, 90, blue);
   rect(0, y, width, height);
@@ -64,11 +69,11 @@ function building(){
   // This is the code for the furthest buildings 
   // They have lighter color because it is far away.
   rect(0,y-(height/4),100, height/4 ); 
-  rect(0+(dis*2),y-(height/3),100, height/3 );
+  rect(0+(dis*2),y-(height/3),95, height/3 );
   rect(0+ (dis*5),y-(height/2.2),100, height/2.2 );
-  rect(0+ (dis*7),y-(height/4),100, height/4 );
-  rect(0+ (dis*9),y-(height/2.2),100, height/2.2 );
-  rect(0+ (dis*11.5),y-(height/3),100, height/3 );
+  rect(0+ (dis*7),y-(height/4),120, height/4 );
+  rect(0+ (dis*9),y-(height/2.7),100, height/2.7 );
+  rect(0+ (dis*11.2),y-(height/3),90, height/3 );
   // This section is to draw the building slightly
   // nearer to us. So they have a darker color.
   fill(123, 25, 201);
@@ -82,6 +87,8 @@ function building(){
   rect(0+ (dis*10.5),y-(height/4),80, height/4 );
   rect(0+ (dis*11),y-(height/6),160, height/6 );
   // Nearets buildings, darkest color among the three.
+  // I want to make more details, since they're pretty close 
+  // to the narrator.
   fill(79, 26, 122);
   rect(0,y-(height/10),20, height/10 );
   rect(0,y-(height/18),110, height/18 );
@@ -100,4 +107,12 @@ function building(){
   rect(0+ (dis*10),y-(height/17),90, height/17);
   rect(0+ (dis*9.25),y-(height/6.25),2.5, height/6.25);
   rect(0+ (dis*11.3),y-(height/11),60, height/11);
+}
+
+// Draw the moonlight on the river 
+// usig lines.
+function light(){
+  stroke(214, 200, 86);
+  strokeWeight(3);
+  line(x-(x/2), y+(dis*3), x+(x/2), y+(dis*3));
 }
