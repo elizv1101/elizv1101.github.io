@@ -7,53 +7,96 @@ let x;
 let y;
 let dis;
 let blue;
+let currentBack;
 // variable declaration
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   x= width/2;
   y= height/1.5;
-  blue = 145
-  dis = 80
+  blue = 145;
+  dis = 80;
+  currentBack =0;
 }
 
+
+
 function draw() {
-  background(0, 90, 140);
-  moon();
+
+  // set the background based on the 
+  // value of the variable.
+  // This is the default night with a big moon
+  if (currentBack === 0){
+    background(0, 90, blue+ 60);
+    moon1();
+  }
+
+
+  // No moon night, I make it a little darker
+  // since there is no moon.
+  if (currentBack === 1){
+    background(0, 80, blue);
+  }
+
+
+  // Small moon at the corner of the canvas
+  if (currentBack===2){
+    background(0, 90, blue+ 60);
+    moon2();
+  }
+
+  // Code to draw the scenery
   river();
   building();
   light();
+  alien();
+
+  // My name in the left bottom corner
+  strokeWeight(1);
+  textSize(32);
+  text("Eliz Vo", 10, height*0.99);
 }
 
 
 // Draw the moon using circle
-function moon(){
+// This is the big moon
+function moon1(){
+  noStroke();
   fill(252, 223, 105);
   circle(x,y, y*1.5);
 }
 
 
+// The small moon for the third background
+function moon2(){
+  noStroke();
+  fill(252, 223, 105);
+  circle(width- (x/5), y/6, 130);
+}
+
 
 // This function draws a river
 // using rectangles
-// There is some gradings to it
+// There are some gradings to it
 function river(){
   noStroke();
   fill(0, 90, blue);
   rect(0, y, width, height);
-  fill(0, 90, blue+ 10);
-  rect(0, y+ dis/2, width, height);
   fill(0, 90, blue+ 20);
-  rect(0, y+ dis, width, height);
-  fill(0, 90, blue+ 30);
-  rect(0, y+ (dis*1.5), width, height);
+  rect(0, y+ dis/2, width, height);
   fill(0, 90, blue+ 40);
-  rect(0, y+ (dis*2), width, height);
-  fill(0, 90, blue+ 50);
-  rect(0, y+ (dis*2.5), width, height);
+  rect(0, y+ dis, width, height);
   fill(0, 90, blue+ 60);
+  rect(0, y+ (dis*1.5), width, height);
+  fill(0, 90, blue+ 80);
+  rect(0, y+ (dis*2), width, height);
+  fill(0, 90, blue+ 100);
+  rect(0, y+ (dis*2.5), width, height);
+  fill(0, 90, blue+ 120);
   rect(0, y+ (dis*3), width, height);
-  fill(0, 90, blue+ 70);
+  fill(0, 90, blue+ 140);
   rect(0, y+ (dis*3.5), width, height);
 }
 
@@ -107,12 +150,60 @@ function building(){
   rect(0+ (dis*10),y-(height/17),90, height/17);
   rect(0+ (dis*9.25),y-(height/6.25),2.5, height/6.25);
   rect(0+ (dis*11.3),y-(height/11),60, height/11);
+  // I made a thin line to distinct between the ground and the river.
+  stroke(0,0,0);
+  strokeWeight(1);
+  line(0, y, width, y)
 }
 
-// Draw the moonlight on the river 
-// usig lines.
+
+
+
+// My character is an UFO with an alien in it.
+// I want to draw it using circles, ellipses, and lines.
+// The UFO follows the mouse.
+function alien(){
+  // The "head" of the UFO
+  noStroke();
+  fill(208, 221, 245); 
+  circle(mouseX, mouseY, 50); 
+  // Then I draw the alien
+  fill(30, 179, 68);
+  noStroke();
+  circle(mouseX, mouseY-5, 25);
+  // The "body" of the UFO
+  noStroke();
+  fill(40, 41, 46);
+  ellipse(mouseX, mouseY+20, 100, 35); 
+  // These are for the legs of the UFO
+  stroke(40, 41, 46);
+  strokeWeight(5);
+  line(mouseX-40, mouseY+25, mouseX-50, mouseY+45);
+  line(mouseX, mouseY+25, mouseX, mouseY+55);
+  line(mouseX+40, mouseY+25, mouseX+50, mouseY+45);
+
+}
+
+
+// I want to add a feature where the UFO casts the
+// light when the mouse is clicked.
 function light(){
-  stroke(214, 200, 86);
-  strokeWeight(3);
-  line(x-(x/2), y+(dis*3), x+(x/2), y+(dis*3));
+  if (mouseIsPressed){
+    noStroke();
+    fill(219, 157, 23)
+    triangle(mouseX, mouseY, mouseX-70, mouseY+130, mouseX+70, mouseY +130);
+  }
+}
+
+
+// Make a function to count whenever ENTER is clicked.
+// From that number the background will change.
+function keyPressed(){
+  if (keyCode=== ENTER && keyIsPressed ){
+    print("change back");
+    currentBack++;
+    if (currentBack > 2){
+      currentBack = 0;
+    }
+  }
 }
