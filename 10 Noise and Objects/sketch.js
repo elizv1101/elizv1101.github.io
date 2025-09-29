@@ -2,7 +2,7 @@
 // Eliz Vo
 // September 26, 2025
 
-let ball, ball2;
+let ball, ball2, ball3, ball4, ball5, ball6, ball7, ball8;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -10,17 +10,54 @@ function setup() {
     //  Object noation. Inside the bracket
     // set up a bunch of 
     // property: value pairs
-    x: 300, y: 400, size: 100,
+    x: width, y: height, size: 150,
     c: color(random(255), random(255), random(255)),
     timeX: random(100), timeY: random(100),
     timeOff: 0.02
   };
   ball2 = {
-    x: 300, y: 400, size: 100,
+    x: 200, y: height, size: 150,
     c: color(random(255), random(255), random(255)),
     timeX: random(100), timeY: random(100),
     timeOff: 0.02
-  }
+  };
+  ball3 = {
+    x: 300, y: height, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+  ball4 = {
+    x: 300, y: height, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+  ball5 = {
+    x: 200, y: 800, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+  ball6 = {
+    x: 300, y: 400, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+  ball7 = {
+    x: 350, y: 700, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+  ball8 = {
+    x: 350, y: 700, size: 150,
+    c: color(random(255), random(255), random(255)),
+    timeX: random(100), timeY: random(100),
+    timeOff: 0.02
+  };
+
 }
 
 function draw() {
@@ -32,6 +69,12 @@ function draw() {
   
   moveBall(ball);
   moveBall(ball2);
+  moveBall(ball3);
+  moveBall(ball4);
+  moveBall(ball5);
+  moveBall(ball6);
+  moveBall(ball7);
+  moveBall(ball8);
 }
 
 function moveBall(b){
