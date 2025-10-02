@@ -44,7 +44,3 @@ function randomCircle(){
   d1 = random(minSize, maxSize);
   circle(x1, y1, d1);
 }
-
-function noiseMove(){
-  
-}
