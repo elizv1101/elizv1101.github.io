@@ -16,6 +16,14 @@ function setup() {
   rectWidth = 5;
   sumHeight = 0;
   num = 0; 
+  for (i = 1; i > 2; i -= 1) {
+    if (keyIsDown(RIGHT_ARROW)) {
+      rectWidth += 0.5;
+    }
+    else if (keyIsDown(LEFT_ARROW) && rectWidth >= 3) {
+      rectWidth -= 0.5;
+    }
+  }
 }
 
 function generateTerrain() {
@@ -48,14 +56,15 @@ function generateTerrain() {
     color(184, 46, 46);
     rect(x, height, x2, y2);
     // Count the number of rectangles on the screen
+    // Calculate the average height of the rectangles
+    // appear on the screen.
     num = width/ rectWidth;
-    sumHeight += rectHeight ;
+    sumHeight += y2 ;
   }
   avrHeight = sumHeight/ num;
   drawFlag(highestX, highestY);
   rectMode(CORNER);  //revert to default
 }
-
 // Function to draw flag 
 function drawFlag(x, y) {
   stroke(255, 255, 255);
@@ -64,9 +73,11 @@ function drawFlag(x, y) {
   triangle(x, y - 15, x + 15, y - 22.5, x, y - 30);
 }
 
-function averageHeightDetector() {
-  fill(255);
-  stroke(30);
+// Function to indicate the average height 
+// draw a bar/ rectangle on the screen.
+function averageHeightIndicator() {
+  fill(200, 200, 200);
+  noStroke();
   rect(0, avrHeight, width, 20);
 }
 
@@ -79,14 +90,5 @@ function draw() {
     fill(148, 8, 8);
   generateTerrain();
   noiseStart += 0.00989;
-
-
-  // for (i = 1; i > 2; i -= 1) {
-  //   if (keyIsPressed(RIGHT_ARROW)) {
-  //     rectWidth += 0.5;
-  //   }
-  //   else if (keyIsPressed(LEFT_ARROW)) {
-  //     rectWidth -= 0.5;
-  //   }
-  // }
+  averageHeightIndicator();
 }
