@@ -2,7 +2,7 @@
 // Eliz Vo
 // Sept 29, 2025
 
-let rectWidth;
+let rectWidth =5;
 let count = 0;
 let noiseStart = 0;
 let noiseValue;
@@ -13,17 +13,17 @@ let sumHeight;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  rectWidth = 5;
   sumHeight = 0;
   num = 0; 
-  for (i = 1; i > 2; i -= 1) {
-    if (keyIsDown(RIGHT_ARROW)) {
-      rectWidth += 0.5;
-    }
-    else if (keyIsDown(LEFT_ARROW) && rectWidth >= 3) {
-      rectWidth -= 0.5;
-    }
-  }
+  // I don't know why but this code is not working
+  // for (i = 1; i > 2; i -= 1) {
+  //   if (keyIsDown(RIGHT_ARROW)) {
+  //     rectWidth += 0.5;
+  //   }
+  //   else if (keyIsDown(LEFT_ARROW) && rectWidth >= 3) {
+  //     rectWidth -= 0.5;
+  //   }
+  // }
 }
 
 function generateTerrain() {
@@ -74,7 +74,7 @@ function drawFlag(x, y) {
 }
 
 // Function to indicate the average height 
-// draw a bar/ rectangle on the screen.
+// draw a bar/rectangle on the screen.
 function averageHeightIndicator() {
   fill(200, 200, 200);
   noStroke();
@@ -90,5 +90,12 @@ function draw() {
     fill(148, 8, 8);
   generateTerrain();
   noiseStart += 0.00989;
+
+  if (keyIsDown(RIGHT_ARROW)) {
+    rectWidth += 0.2;
+  };
+  if (keyIsDown(LEFT_ARROW) && rectWidth >= 3) {
+    rectWidth -= 0.2;
+  };
   averageHeightIndicator();
 }
