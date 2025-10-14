@@ -31,7 +31,7 @@ function draw(){
 }
 
 class Ball {
-  // 1. Condtructor
+  // 1. Constructor
   constructor(x, y){
     this.x = x;   this.y = y;
     this.c = color(random(255), random(255), random(255));
