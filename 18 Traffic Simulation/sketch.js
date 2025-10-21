@@ -41,20 +41,33 @@
 
 let westBound = [];
 let eastBound = [];
+let myVehicles;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  for (let i = 0; i <= 20; i ++){
+    myVehicles = new Vehicles(0, random(height/2 + 8, 
+      height - (height/ 4 - 8), )), 0, random(0,1)
+    eastBound.push( myVehicles);
+    for (let e of eastBound){
+      e.move();
+      e.display();
+      e.action();
+    }
+  }
 }
 
 function draw() {
   background(65, 50, 35);
   drawRoad();
-
 }
 
+
 function drawRoad(){
-  noStroke();
+  stroke(230);
   fill(32, 32, 32);
+  rectMode(CORNER);
   rect(0, height/8, width, height - (height/4));
 
   for (let x = 0; x <= width; x += 75){
@@ -75,29 +88,73 @@ class Vehicles{
 
   display(){
     rectMode(CENTER);
-    if (this.t === 0){
+    strokeWeight(0.1);
+    if (this.t <= 0.5){    // Car
       fill(this.color);
-      rect(this.x, this.y, 50, 100);
+      rect(this.x, this.y, 25, 15);
+
+
+      noStroke();
+      fill(230);
+      rect(this.x - 7 , this. y + 10, 4, 2);
+      rect(this.x - 7 , this. y - 10, 4, 2);
+      rect(this.x + 7 , this. y + 10, 4, 2);
+      rect(this.x + 7 , this. y - 10, 4, 2);
     }
-    if (this.t !== 0){
+    if (this.t > 0.5){   // Truck
       fill(this.color);
-      rect(this.x, this. y, 55, 200);
+      rect(this.x, this. y, 45, 25);
+      
+      fill(230);
+      noStroke();
+      rect(this.x + 15, this. y, 2, 24.5);
     }
-    pop();
   }
 
   move(){
-    if (this.d === 0){
+    if (this.d === 0){         // Eastbound
       this.x -= this.speed;
       if(this.x <= 0){
         this. x = width;
       }
     }
-    if (this.d === 1){
+    if (this.d === 1){         // Westbound
       this.x += this.speed;
       if (this.x >= width){
         this.x = 0;
       }
+    }
+  }
+
+  speedUp(){
+    if (this.speed < 8){
+      this.speed += 0.1
+    }
+  }
+
+  speedDown(){
+    if (this.speed > 1){
+      this.speed -= 0.1
+    }
+  }
+
+  changeColor(){
+    this.color = color(random(255), random(255), random(255));
+    fill(this.color);
+  }
+
+  action(x, y, d, t){
+    this.move();
+    this.display();
+
+    if (random(1)<0.1){
+      this.speedUp();
+    }
+    if (random(1)< 0.1){
+      this.speedDown();
+    }
+    if (random(1)< 0.1){
+      this.changeColor();
     }
   }
 }
