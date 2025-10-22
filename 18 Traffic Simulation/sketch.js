@@ -42,27 +42,50 @@
 let westBound = [];
 let eastBound = [];
 let myVehicles;
+let myTrafficLight;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  myTrafficLight = new TrafficLight();
   for (let i = 0; i <= 20; i ++){
-    myVehicles = new Vehicles(0, random(height/2 + 8, 
-      height - (height/ 4 - 8), )), 0, random(0,1)
-    eastBound.push( myVehicles);
-    for (let e of eastBound){
-      e.move();
-      e.display();
-      e.action();
-    }
+    eastBound.push(new Vehicles(0, random(height/6, 
+      height/2 - 20), 1, random(0,1)));
+  }
+  for (let i = 0; i <= 20; i ++){
+    westBound.push(new Vehicles(0, random(height/2 + 20, 
+      height - (height/ 7), ), 0, random(0,1)));
   }
 }
 
 function draw() {
   background(65, 50, 35);
   drawRoad();
+  for (let e of eastBound){
+    e.action();
+   }
+   for (let w of westBound){
+    w.action();
+
+    myTrafficLight.display();
+    myTrafficLight.changeColor();
+  }
 }
 
+function mousePressed(){
+  if (mouseButton === LEFT){
+    if (mouseIsPressed && keyCode !== SHIFT){
+      print("add eastbound");
+      eastBound.push(new Vehicles(0, random(height/6, 
+        height/2 - 20), 1, random(0,1)));
+    };
+    if (keyCode === SHIFT && keyIsPressed && mouseIsPressed){
+      print("add westbound");
+      westBound.push(new Vehicles(0, random(height/2 + 20, 
+        height - (height/ 7), ), 0, random(0,1)));
+    }
+}
+}
 
 function drawRoad(){
   stroke(230);
@@ -91,7 +114,7 @@ class Vehicles{
     strokeWeight(0.1);
     if (this.t <= 0.5){    // Car
       fill(this.color);
-      rect(this.x, this.y, 25, 15);
+      rect(this.x, this.y, 30, 15);
 
 
       noStroke();
@@ -103,7 +126,7 @@ class Vehicles{
     }
     if (this.t > 0.5){   // Truck
       fill(this.color);
-      rect(this.x, this. y, 45, 25);
+      rect(this.x, this. y, 50, 25);
       
       fill(230);
       noStroke();
@@ -113,28 +136,28 @@ class Vehicles{
 
   move(){
     if (this.d === 0){         // Eastbound
-      this.x -= this.speed;
-      if(this.x <= 0){
-        this. x = width;
+      this.x += this.speed;
+      if(this.x >= width){
+        this. x =0;
       }
     }
     if (this.d === 1){         // Westbound
-      this.x += this.speed;
-      if (this.x >= width){
-        this.x = 0;
+      this.x -= this.speed;
+      if (this.x <= 0){
+        this.x = width;
       }
     }
   }
 
   speedUp(){
-    if (this.speed < 8){
-      this.speed += 0.1
+    if (this.speed <= 15){
+      this.speed += 0.5
     }
   }
 
   speedDown(){
-    if (this.speed > 1){
-      this.speed -= 0.1
+    if (this.speed >= 1){
+      this.speed -= 0.5
     }
   }
 
@@ -143,18 +166,39 @@ class Vehicles{
     fill(this.color);
   }
 
-  action(x, y, d, t){
+  action(){
     this.move();
     this.display();
 
-    if (random(1)<0.1){
+    if (random(1)<0.01){
       this.speedUp();
     }
-    if (random(1)< 0.1){
+    if (random(1)< 0.01){
       this.speedDown();
     }
-    if (random(1)< 0.1){
+    if (random(1)< 0.01){
       this.changeColor();
+    }
+  }
+}
+
+class TrafficLight{
+  constructor(){
+    this.light = true;
+    this.c = color(50,255,90);
+  }
+
+  display(){
+    stroke(0,0,0);
+    strokeWeight(1);
+    fill(this.c);
+    circle(width/2, height/16, 90);
+  }
+
+  changeColor(){
+    if (keyCode === ENTER && keyIsPressed){
+      this.light = false;
+      this.c = color(255, 10, 15);
     }
   }
 }
