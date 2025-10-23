@@ -68,7 +68,6 @@ function draw() {
     w.action();
 
     myTrafficLight.display();
-    myTrafficLight.changeColor();
   }
 }
 
@@ -135,17 +134,33 @@ class Vehicles{
   }
 
   move(){
-    if (this.d === 0){         // Eastbound
-      this.x += this.speed;
-      if(this.x >= width){
-        this. x =0;
+    if (myTrafficLight.light === 0){
+      if (this.d === 0){         // Eastbound
+        this.x += this.speed;
+        if(this.x >= width){
+          this. x =0;
+        }
+      }
+      if (this.d === 1){         // Westbound
+        this.x -= this.speed;
+        if (this.x <= 0){
+          this.x = width;
+        }
       }
     }
-    if (this.d === 1){         // Westbound
-      this.x -= this.speed;
-      if (this.x <= 0){
-        this.x = width;
+    else if (myTrafficLight.light = 2){ 
+      if (this.d === 0){         // Eastbound
+        this.x += this.speed/1.1;
+        if(this.x >= width){
+          this. x =0;
+        }
       }
+      if (this.d === 1){         // Westbound
+        this.x -= this.speed/1.1;
+        if (this.x <= 0){
+          this.x = width;
+        }
+      } 
     }
   }
 
@@ -184,21 +199,30 @@ class Vehicles{
 
 class TrafficLight{
   constructor(){
-    this.light = true;
+    this.light = 0;
     this.c = color(50,255,90);
   }
 
   display(){
     stroke(0,0,0);
-    strokeWeight(1);
+    strokeWeight(2);
+    if (keyCode === ENTER && keyIsPressed){
+      for (let frameCount = 0; frameCount <= 120; frameCount++){
+        this.c = color(255, 10, 15);
+        this.light = 1;
+      }
+    }
+    else if (keyCode === BACKSPACE && keyIsPressed){
+      for (let frameCount = 0; frameCount <= 120; frameCount++){
+        this.c = color(230, 200, 20);
+        this.light = 2;
+      }
+    }
+    else{
+      this.c = color(50,255,90);
+      this.light = 0;
+    }
     fill(this.c);
     circle(width/2, height/16, 90);
-  }
-
-  changeColor(){
-    if (keyCode === ENTER && keyIsPressed){
-      this.light = false;
-      this.c = color(255, 10, 15);
-    }
   }
 }
