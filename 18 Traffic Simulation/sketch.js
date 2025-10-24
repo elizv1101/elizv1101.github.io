@@ -1,52 +1,19 @@
 // Traffic Simulation
 // Eliz Vo
 // October 20, 2025
-//
-// Class for Vehicles: 
-// Two types of vehicles  (cars, trucks, semi, motorbike,...)
-// Set random on object creation
-// xPosition, yPosition, xSpeed
-// randomColor for the vehicles
-// direction: keep track if it's Westbound or Eastbound
-
-// METHODS:
-// move()
-// Update position. When reach the edge, wrap around
-
-// display()
-// display
-
-// speedUp()
-// Increase the speed of the vehicle (to max of 15)
-
-//speedDown()
-// Decrease the speed of the vehicle (to min of 0)
-
-//changeColor()
-// Update the primary color to new random color
-
-// Action
-// Helper function to help call the function internally
-// Every frame: move() and display()
-// 1% on a given frame: speedUp(), speedDown(), changeColor()
 
 
-// Function to draw road:
-// Two lanes, should be separated by a dashed yellow line
-// Westbound (top), Eastbound (bottom)
-
-// Create 2 arrays to hold vehicles 
-// let westBound = [];   let Eastbound = [];
-
-
+// GLOBAL VARIABLES
 let westBound = [];
 let eastBound = [];
 let myVehicles;
 let myTrafficLight;
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  // Loop to create 20 vehicles on both sides
   myTrafficLight = new TrafficLight();
   for (let i = 0; i <= 20; i ++){
     eastBound.push(new Vehicles(0, random(height/6, 
@@ -61,6 +28,7 @@ function setup() {
 function draw() {
   background(65, 50, 35);
   drawRoad();
+
   for (let e of eastBound){
     e.action();
    }
@@ -71,6 +39,10 @@ function draw() {
   }
 }
 
+
+// Function to add vehicles on both sides
+// SHIFT + LEFT CLICK to add car on Westbound 
+// LEFT CLICK too add car on Eastbound
 function mousePressed(){
   if (mouseButton === LEFT){
     if (mouseIsPressed && keyCode !== SHIFT){
@@ -86,6 +58,7 @@ function mousePressed(){
 }
 }
 
+// Function to draw road
 function drawRoad(){
   stroke(230);
   fill(32, 32, 32);
@@ -99,6 +72,7 @@ function drawRoad(){
   }
 }
 
+
 class Vehicles{
   constructor(x, y, d, t){
     this.x = x;   this.y = y;
@@ -111,7 +85,9 @@ class Vehicles{
   display(){
     rectMode(CENTER);
     strokeWeight(0.1);
-    if (this.t <= 0.5){    // Car
+
+    // Draw a car with 4 wheels 
+    if (this.t <= 0.5){    
       fill(this.color);
       rect(this.x, this.y, 30, 15);
 
@@ -123,7 +99,9 @@ class Vehicles{
       rect(this.x + 7 , this. y + 10, 4, 2);
       rect(this.x + 7 , this. y - 10, 4, 2);
     }
-    if (this.t > 0.5){   // Truck
+
+    // Draw a truck with a line to distinct the head of the truck
+    if (this.t > 0.5){   
       fill(this.color);
       rect(this.x, this. y, 50, 25);
       
@@ -133,34 +111,44 @@ class Vehicles{
     }
   }
 
+  // Make the movements to match the traffic light
   move(){
+
+    // myTrafficLight.light === 0 (GREEN LIGHT)
     if (myTrafficLight.light === 0){
-      if (this.d === 0){         // Eastbound
-        this.x += this.speed;
+
+      // this.d === 0 (EASTBOUND)
+      if (this.d === 0){    
+        this.x += this.speed;  
         if(this.x >= width){
           this. x =0;
         }
       }
-      if (this.d === 1){         // Westbound
+
+      // this.d === 1 (WESTBOUND)
+      else if (this.d === 1){         
         this.x -= this.speed;
         if (this.x <= 0){
           this.x = width;
         }
       }
     }
-    else if (myTrafficLight.light = 2){ 
-      if (this.d === 0){         // Eastbound
-        this.x += this.speed/1.1;
+
+    // 
+    else if (myTrafficLight.light === 2){ 
+      if (this.d === 0){   
+        // Eastbound
+        this.x += this.speed/this.speed;
         if(this.x >= width){
           this. x =0;
         }
       }
-      if (this.d === 1){         // Westbound
-        this.x -= this.speed/1.1;
+      else if (this.d === 1){         // Westbound
+        this.x -= this.speed/this.speed;
         if (this.x <= 0){
           this.x = width;
         }
-      } 
+      }
     }
   }
 
