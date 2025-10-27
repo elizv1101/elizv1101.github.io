@@ -134,17 +134,19 @@ class Vehicles{
       }
     }
 
-    // 
+    // myTrafficLight === 2 (YELLOW LIGHT)
     else if (myTrafficLight.light === 2){ 
+      // EASTBOUND
       if (this.d === 0){   
-        // Eastbound
-        this.x += this.speed/this.speed;
+        this.x += 1;
         if(this.x >= width){
           this. x =0;
         }
       }
+
+      // WESTBOUND
       else if (this.d === 1){         // Westbound
-        this.x -= this.speed/this.speed;
+        this.x -= 1;
         if (this.x <= 0){
           this.x = width;
         }
@@ -152,23 +154,30 @@ class Vehicles{
     }
   }
 
+
+  // Function to speed up
   speedUp(){
     if (this.speed <= 15){
       this.speed += 0.5
     }
   }
 
+  // Function to speed down
   speedDown(){
     if (this.speed >= 1){
       this.speed -= 0.5
     }
   }
 
+  // Function to change color 
   changeColor(){
     this.color = color(random(255), random(255), random(255));
     fill(this.color);
   }
 
+  // Function to call other functions internally 
+  // move(), display() 1 time/ frame
+  // speedUp(), speedDown(), changeColor() 1% chance per frame.
   action(){
     this.move();
     this.display();
@@ -185,27 +194,35 @@ class Vehicles{
   }
 }
 
+
 class TrafficLight{
   constructor(){
     this.light = 0;
     this.c = color(50,255,90);
   }
 
+
+  // Draw the traffic light at the top of the screen
+  // The traffic light changes color according to the 
+  // key being clicked/ or no key clicked
   display(){
     stroke(0,0,0);
     strokeWeight(2);
+    // ENTER = REDLIGHT
     if (keyCode === ENTER && keyIsPressed){
       for (let frameCount = 0; frameCount <= 120; frameCount++){
         this.c = color(255, 10, 15);
         this.light = 1;
       }
     }
+    // BACKSPACE = YELLOW LIGHT
     else if (keyCode === BACKSPACE && keyIsPressed){
       for (let frameCount = 0; frameCount <= 120; frameCount++){
         this.c = color(230, 200, 20);
         this.light = 2;
       }
     }
+    // NO KEY CLICKED = GREENLIGHT
     else{
       this.c = color(50,255,90);
       this.light = 0;
