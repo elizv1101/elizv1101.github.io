@@ -1,0 +1,19 @@
+class CircleObject extends AnimatedObject{
+  constructor(x, y){
+    super(x, y);
+    // We can also add-on to wht was in the parent class 
+    this.size = random(20, 40);
+  }
+
+  // no mention of move()... it will ne same as parent's move
+
+  display(){   // Function override; copies overtop of parent's version
+    if (dist(this.x, this.y, mouseX, mouseY) < this.size/ 2){
+      fill(20, 170, 60);
+    }
+    else{
+      fill(255, 0, 0);
+    }
+    circle(this.x, this.y, this.size);
+  }
+}

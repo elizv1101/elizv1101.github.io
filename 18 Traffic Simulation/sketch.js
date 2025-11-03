@@ -1,233 +1,51 @@
-// Traffic Simulation
-// Eliz Vo
-// October 20, 2025
-
-
-// GLOBAL VARIABLES
-let westBound = [];
-let eastBound = [];
-let myVehicles;
-let myTrafficLight;
-
+// Do not edit the code between these comments. 
+// You should only edit the class Particle below.
+// -----------------------------------------------
+let fireworks = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  // Loop to create 20 vehicles on both sides
-  myTrafficLight = new TrafficLight();
-  for (let i = 0; i <= 20; i ++){
-    eastBound.push(new Vehicles(0, random(height/6, 
-      height/2 - 20), 1, random(0,1)));
-  }
-  for (let i = 0; i <= 20; i ++){
-    westBound.push(new Vehicles(0, random(height/2 + 20, 
-      height - (height/ 7), ), 0, random(0,1)));
-  }
 }
 
 function draw() {
-  background(65, 50, 35);
-  drawRoad();
+  background("black");
 
-  for (let e of eastBound){
-    e.action();
-   }
-   for (let w of westBound){
-    w.action();
-
-    myTrafficLight.display();
+  for (let i=fireworks.length-1; i>=0; i--) {
+    fireworks[i].update();
+    fireworks[i].display();
   }
 }
 
-
-// Function to add vehicles on both sides
-// SHIFT + LEFT CLICK to add car on Westbound 
-// LEFT CLICK too add car on Eastbound
-function mousePressed(){
-  if (mouseButton === LEFT){
-    if (mouseIsPressed && keyCode !== SHIFT){
-      print("add eastbound");
-      eastBound.push(new Vehicles(0, random(height/6, 
-        height/2 - 20), 1, random(0,1)));
-    };
-    if (keyCode === SHIFT && keyIsPressed && mouseIsPressed){
-      print("add westbound");
-      westBound.push(new Vehicles(0, random(height/2 + 20, 
-        height - (height/ 7), ), 0, random(0,1)));
-    }
-}
-}
-
-// Function to draw road
-function drawRoad(){
-  stroke(230);
-  fill(32, 32, 32);
-  rectMode(CORNER);
-  rect(0, height/8, width, height - (height/4));
-
-  for (let x = 0; x <= width; x += 75){
-    stroke(255, 255, 51);
-    strokeWeight(5);
-    rect(x, height/2 -2.5, 30, 5);
+function mousePressed() {
+  for (let i=0; i<100; i++) {
+    let someParticle = new Particle(mouseX, mouseY);
+    fireworks.push(someParticle);
   }
 }
 
+// -----------------------------------------------
 
-class Vehicles{
-  constructor(x, y, d, t){
-    this.x = x;   this.y = y;
-    this.speed = random(1 , 5);
-    this.color = color(random(255), random(255), random(255));
-    this.d = d;
-    this.t = t;   
+class Particle {
+  // Your code should go here!
+  // Make the class work as described in the quiz question...
+  constructor(x, y){
+    this.x = x;
+    this.y = y; 
+    this.size = 10
+    this.dx = random(-5, 5);
+    this.dy = random(-5, 5);
+    this.color = color(255, 255, 255);
   }
-
+  
   display(){
-    rectMode(CENTER);
-    strokeWeight(0.1);
-
-    // Draw a car with 4 wheels 
-    if (this.t <= 0.5){    
-      fill(this.color);
-      rect(this.x, this.y, 30, 15);
-
-
-      noStroke();
-      fill(230);
-      rect(this.x - 7 , this. y + 10, 4, 2);
-      rect(this.x - 7 , this. y - 10, 4, 2);
-      rect(this.x + 7 , this. y + 10, 4, 2);
-      rect(this.x + 7 , this. y - 10, 4, 2);
-    }
-
-    // Draw a truck with a line to distinct the head of the truck
-    if (this.t > 0.5){   
-      fill(this.color);
-      rect(this.x, this. y, 50, 25);
-      
-      fill(230);
-      noStroke();
-      rect(this.x + 15, this. y, 2, 24.5);
-    }
-  }
-
-  // Make the movements to match the traffic light
-  move(){
-
-    // myTrafficLight.light === 0 (GREEN LIGHT)
-    if (myTrafficLight.light === 0){
-
-      // this.d === 0 (EASTBOUND)
-      if (this.d === 0){    
-        this.x += this.speed;  
-        if(this.x >= width){
-          this. x =0;
-        }
-      }
-
-      // this.d === 1 (WESTBOUND)
-      else if (this.d === 1){         
-        this.x -= this.speed;
-        if (this.x <= 0){
-          this.x = width;
-        }
-      }
-    }
-
-    // myTrafficLight === 2 (YELLOW LIGHT)
-    else if (myTrafficLight.light === 2){ 
-      // EASTBOUND
-      if (this.d === 0){   
-        this.x += 1;
-        if(this.x >= width){
-          this. x =0;
-        }
-      }
-
-      // WESTBOUND
-      else if (this.d === 1){         // Westbound
-        this.x -= 1;
-        if (this.x <= 0){
-          this.x = width;
-        }
-      }
-    }
-  }
-
-
-  // Function to speed up
-  speedUp(){
-    if (this.speed <= 15){
-      this.speed += 0.5
-    }
-  }
-
-  // Function to speed down
-  speedDown(){
-    if (this.speed >= 1){
-      this.speed -= 0.5
-    }
-  }
-
-  // Function to change color 
-  changeColor(){
-    this.color = color(random(255), random(255), random(255));
+    noStroke();
     fill(this.color);
+    circle(this.x, this.y, this.size);
   }
-
-  // Function to call other functions internally 
-  // move(), display() 1 time/ frame
-  // speedUp(), speedDown(), changeColor() 1% chance per frame.
-  action(){
-    this.move();
-    this.display();
-
-    if (random(1)<0.01){
-      this.speedUp();
-    }
-    if (random(1)< 0.01){
-      this.speedDown();
-    }
-    if (random(1)< 0.01){
-      this.changeColor();
-    }
-  }
-}
-
-
-class TrafficLight{
-  constructor(){
-    this.light = 0;
-    this.c = color(50,255,90);
-  }
-
-
-  // Draw the traffic light at the top of the screen
-  // The traffic light changes color according to the 
-  // key being clicked/ or no key clicked
-  display(){
-    stroke(0,0,0);
-    strokeWeight(2);
-    // ENTER = REDLIGHT
-    if (keyCode === ENTER && keyIsPressed){
-      for (let frameCount = 0; frameCount <= 120; frameCount++){
-        this.c = color(255, 10, 15);
-        this.light = 1;
-      }
-    }
-    // BACKSPACE = YELLOW LIGHT
-    else if (keyCode === BACKSPACE && keyIsPressed){
-      for (let frameCount = 0; frameCount <= 120; frameCount++){
-        this.c = color(230, 200, 20);
-        this.light = 2;
-      }
-    }
-    // NO KEY CLICKED = GREENLIGHT
-    else{
-      this.c = color(50,255,90);
-      this.light = 0;
-    }
-    fill(this.c);
-    circle(width/2, height/16, 90);
+  
+  update(){
+    this.x += this.dx;
+    this.y += this.dy;
+    
   }
 }
