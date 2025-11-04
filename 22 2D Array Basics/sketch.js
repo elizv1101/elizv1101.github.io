@@ -5,68 +5,96 @@
 
 // Grid is 5 x 4 in dimension 
 let grid = [
-  [ 0, 0, 0, 0,  0],
-  [ 0, 0,  0, 0, 0],
-  [ 0, 0, 0,  0, 0],
-  [ 0,  0, 0, 0, 0]
+  [0,     0,   0,  255,   0, 0, 255],
+  [255,   0, 255,    0, 255, 255, 0],
+  [255, 255,   0,  255, 255, 0,   0],
+  [0,     0,   0,  255,   0, 255, 0],
+  [255,   0, 255,    0, 255, 0, 255],
+  [255, 255,   0,  255, 255, 0,   0],
+  [0,   255,   0,    0,   0, 0, 255]
 ];
+
 let rows = grid.length;
 let cols = grid[0].length;
 
-let squareSize = 150;
-                                                                                                                                 
+let squareSize = 80;
 
 function setup() {
-  createCanvas(cols * squareSize, rows * squareSize);
+  createCanvas(cols*squareSize, rows*squareSize);
 }
 
 function draw() {
-  background(100);
+  background(220);
   renderGrid();
-  fill(255);
-  print(getCurrentX(), getCurrentY());
+  print(getCurrentX(),getCurrentY());
+  
+  winCheck();
 }
 
 function mousePressed(){
-  // Flip the current tile 
-  // Only do this if the mouse is on canvas 
+  //flip current tile
+  //upgrade: only do this if the mouse is on Canvas
+  
   let x = getCurrentX();
   let y = getCurrentY();
 
-  // ALWAYS: flip the "focus tile"
-  flip(x, y);
+  //ALWAYS: flip the "focused" tile
+  if( mousePressed && keyCode === SHIFT && keyIsPressed){
+    flip(x,y);
+  }
+  else{
+  //IF THEY EXIST:
+  //flip our NSEW neighbours (cross pattern)
+    if(x+1 < cols) flip(x+1,y);
+    if(y-1 >= 0) flip(x, y-1);
+    if(x-1 < cols) flip(x-1,y);
+    if(y+1 >= 0) flip(x, y+1);
+    flip(x,y);
+  }
 }
 
 function getCurrentX(){
-  // Determine current col of mouse position 
+  //determine current col of mouse position
   let constrainedX = constrain(mouseX, 0, width-1);
-  return (floor(constrainedX/squareSize));
+  return floor(constrainedX / squareSize);
 }
 
 function getCurrentY(){
-  // Determine current row of mouse position 
+  //determine current row of mouse position
   let constrainedY = constrain(mouseY, 0, height-1);
-  return (floor(constrainedY/squareSize));
+  return floor(constrainedY / squareSize);
 }
 
-function flip(x, y){
-  // Takes a tile at x, y and invert its value 
-  if(grid[y][x] === 0){
-    grid[y][x] = random(255);
-  }
-  else{
-    grid[y][x] = 0;
-  }
+
+function flip(x,y){
+  //takes a tile @ x,y and inverts its value
+  if(grid[y][x] === 0) grid[y][x] = 255;
+  else grid[y][x] = 0;
 }
 
 function renderGrid(){
-  // Interpret the information in the 2D array.
-  // To draw a grid of squares on the screen to reflect it. 
+  // interpret the information in the 2D array, and draw
+  // a grid of square on the screen to reflect it.
   for (let y = 0; y < rows; y++){
     for (let x = 0; x < cols; x++){
       let fillColor = grid[y][x];
       fill(fillColor);
-      square(x*squareSize, y* squareSize, squareSize);
+      square(x*squareSize,y*squareSize,squareSize);
+    }
+  }
+}
+
+function winCheck(){
+  for (let y = 0; y < rows; y++){
+    for (let x = 0; x < cols; x++){
+      if  (grid[y][x] === 0 || grid[y][x] === 255){
+        let count = 0;
+        count++;
+        if (count === 49){
+          fill(100);
+          text( "You Win", (7*squareSize)/2 , (7*squareSize)/2);
+        }
+      }
     }
   }
 }
