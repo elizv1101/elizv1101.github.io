@@ -2,16 +2,16 @@
 // Eliz Vo 
 // November 3, 2025
 
-
-// Grid is 5 x 4 in dimension 
+// Grid is 7 x 7 in dimension 
 let grid = [
-  [0,     0,   0,  255,   0, 0, 255],
-  [255,   0, 255,    0, 255, 255, 0],
-  [255, 255,   0,  255, 255, 0,   0],
-  [0,     0,   0,  255,   0, 255, 0],
-  [255,   0, 255,    0, 255, 0, 255],
-  [255, 255,   0,  255, 255, 0,   0],
-  [0,   255,   0,    0,   0, 0, 255]
+  //[0,     0,   0,  255,   0,   0, 255, 0],
+  //[255,   0, 255,    0, 255, 255, 0, 255],
+  //[255, 255,   0,  255, 255, 0,     0, 0],
+  //[0,     0,   0,  255,   0, 255  , 0, 0],
+  [255,   0, 255,    0, 255, 0],
+  [255, 255,   0,  255, 255,   0,   0, 0],
+  [0,   255,   0,    0,   0, 0, 255, 255],
+  [0,     0,   0,  255,   0, 255  , 0, 0]
 ];
 
 let rows = grid.length;
@@ -26,9 +26,15 @@ function setup() {
 function draw() {
   background(220);
   renderGrid();
-  print(getCurrentX(),getCurrentY());
   
-  winCheck();
+  if (winCheck() === true){
+    textSize(40);        
+    textAlign(CENTER, CENTER);
+    fill(255, 40, 60);
+    strokeWeight(4);
+    text("You Win", width/2, height/2);
+  }
+  
 }
 
 function mousePressed(){
@@ -45,11 +51,11 @@ function mousePressed(){
   else{
   //IF THEY EXIST:
   //flip our NSEW neighbours (cross pattern)
+    flip(x, y);
     if(x+1 < cols) flip(x+1,y);
     if(y-1 >= 0) flip(x, y-1);
     if(x-1 < cols) flip(x-1,y);
     if(y+1 >= 0) flip(x, y+1);
-    flip(x,y);
   }
 }
 
@@ -68,8 +74,13 @@ function getCurrentY(){
 
 function flip(x,y){
   //takes a tile @ x,y and inverts its value
-  if(grid[y][x] === 0) grid[y][x] = 255;
-  else grid[y][x] = 0;
+  if(grid[y][x] === 0){
+    grid[y][x] = 255;
+  }
+
+  else{
+    grid[y][x] = 0;
+  }
 }
 
 function renderGrid(){
@@ -85,16 +96,18 @@ function renderGrid(){
 }
 
 function winCheck(){
+  let count = 0;
   for (let y = 0; y < rows; y++){
     for (let x = 0; x < cols; x++){
-      if  (grid[y][x] === 0 || grid[y][x] === 255){
-        let count = 0;
+      if (grid[y][x] === 0){
         count++;
-        if (count === 49){
-          fill(100);
-          text( "You Win", (7*squareSize)/2 , (7*squareSize)/2);
-        }
+      }
+      else if (grid[y][x] === 255){
+        count--;
       }
     }
+  }
+  if (count === rows * cols || count === -(rows * cols)){
+    return true;
   }
 }
