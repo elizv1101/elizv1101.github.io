@@ -4,37 +4,61 @@
 
 // Grid is 7 x 7 in dimension 
 let grid = [
-  //[0,     0,   0,  255,   0,   0, 255, 0],
-  //[255,   0, 255,    0, 255, 255, 0, 255],
-  //[255, 255,   0,  255, 255, 0,     0, 0],
-  //[0,     0,   0,  255,   0, 255  , 0, 0],
-  [255,   0, 255,    0, 255, 0],
-  [255, 255,   0,  255, 255,   0,   0, 0],
-  [0,   255,   0,    0,   0, 0, 255, 255],
-  [0,     0,   0,  255,   0, 255  , 0, 0]
+  [], 
+  [], 
+  [], 
+  [], 
+  [], 
+  [] , 
+  [], 
+  [], 
+  [], 
+  []
 ];
 
-let rows = grid.length;
-let cols = grid[0].length;
+let rows = 10;
+let cols = 10;
 
 let squareSize = 80;
 
 function setup() {
   createCanvas(cols*squareSize, rows*squareSize);
+  createGrid();
 }
 
 function draw() {
   background(220);
   renderGrid();
-  
+  // colorOverlay();
+
+  // If winCheck() === true,
+  // display the "You Win" text on the screen
   if (winCheck() === true){
     textSize(40);        
     textAlign(CENTER, CENTER);
     fill(255, 40, 60);
-    strokeWeight(4);
+    strokeWeight(2);
     text("You Win", width/2, height/2);
   }
-  
+}
+
+// Function to create random grid
+function createGrid(){
+  for (let y = 0; y< rows; y++){
+    for (let x = 0; x< cols; x++){
+      // Choose a random number between 0 and 1
+      let n = random(0,1);
+      // if the number is lower than or equal to 0.5
+      // the color of that tile is black.
+      if(n <= 0.5){
+        grid[y][x] = 0;
+      }
+      // else the tile will be white.
+      else{
+        grid[y][x] = 255;
+      }
+    }
+  }
 }
 
 function mousePressed(){
@@ -96,18 +120,38 @@ function renderGrid(){
 }
 
 function winCheck(){
+  // Create a variable called count
   let count = 0;
   for (let y = 0; y < rows; y++){
     for (let x = 0; x < cols; x++){
+      // If the color of the tile checked is black 
+      // count plus 1
       if (grid[y][x] === 0){
         count++;
       }
+      // If the color of the tile checked is white
+      // count minus 1
       else if (grid[y][x] === 255){
         count--;
       }
     }
   }
+  // If count = the number of tiles, or count = -(number of tiles)
+  // Return true
   if (count === rows * cols || count === -(rows * cols)){
     return true;
   }
+}
+
+
+function colorOverlay(){
+  let x = getCurrentX();
+  let y = getCurrentY();
+
+  grid[y][x] = color(200, 50, 20);
+  grid[y+1][x] = color(200, 50, 20);
+  grid[y-1][x] = color(200, 50, 20);
+  grid[y][x+1] = color(200, 50, 20);
+  grid[y][x-1] = color(200, 50, 20);
+
 }
