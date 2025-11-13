@@ -9,17 +9,14 @@ let grid = [
   [], 
   [], 
   [], 
-  [] , 
-  [], 
-  [], 
-  [], 
   []
 ];
 
-let rows = 10;
-let cols = 10;
+let mode = 0;
+let rows = 6;
+let cols = 6;
 
-let squareSize = 80;
+let squareSize = 120;
 
 function setup() {
   createCanvas(cols*squareSize, rows*squareSize);
@@ -61,25 +58,45 @@ function createGrid(){
   }
 }
 
-function mousePressed(){
-  //flip current tile
-  //upgrade: only do this if the mouse is on Canvas
+
+// Function to change the variable determine 
+// the pattern mode of the puzzle
+
+// The pattern mode can be changed by 
+// pressing SPACE
+function keyPressed(){
+  if (key ===" "){
+    mode += 1;
+  }
+}
   
+function mousePressed(){
+
   let x = getCurrentX();
   let y = getCurrentY();
-
-  //ALWAYS: flip the "focused" tile
-  if( mousePressed && keyCode === SHIFT && keyIsPressed){
+  
+  if (mousePressed && keyCode === SHIFT && keyIsPressed){
     flip(x,y);
   }
-  else{
-  //IF THEY EXIST:
-  //flip our NSEW neighbours (cross pattern)
+
+
+  // If mode is an even number => cross pattern
+  else if (mode % 2 === 0){
+    // Cross Pattern
     flip(x, y);
     if(x+1 < cols) flip(x+1,y);
     if(y-1 >= 0) flip(x, y-1);
     if(x-1 < cols) flip(x-1,y);
     if(y+1 >= 0) flip(x, y+1);
+  }
+
+  // If mode is an uneven number => square pattern
+  else{
+    // Square Pattern
+    flip(x, y);
+    if(x+1 < cols) flip(x+1,y);
+    if(y+1 >= 0 && x+ 1 < cols) flip(x+1, y+1);
+    if(y + 1 >= 0) flip(x,y +1);
   }
 }
 
@@ -148,10 +165,16 @@ function colorOverlay(){
   let x = getCurrentX();
   let y = getCurrentY();
 
-  grid[y][x] = color(200, 50, 20);
-  grid[y+1][x] = color(200, 50, 20);
-  grid[y-1][x] = color(200, 50, 20);
-  grid[y][x+1] = color(200, 50, 20);
-  grid[y][x-1] = color(200, 50, 20);
+
+  if (key === SHIFT && keyIsPressed){
+    if (grid[y][x] === 0){
+      grid[y][x] = color(128, 6, 29);
+      updatePixels();
+    }
+    else{
+      grid[y][x] = color(128, 106, 129);
+      updatePixels();
+    }
+  }
 
 }
