@@ -2,21 +2,21 @@
 // Eliz Vo 
 // November 3, 2025
 
-// Grid is 7 x 7 in dimension 
 let grid = [
   [], 
   [], 
   [], 
   [], 
   [], 
+  [],
   []
 ];
 
 let mode = 0;
-let rows = 6;
-let cols = 6;
+let rows = 7;
+let cols = 7;
 
-let squareSize = 120;
+let squareSize = 110;
 
 function setup() {
   createCanvas(cols*squareSize, rows*squareSize);
@@ -26,7 +26,6 @@ function setup() {
 function draw() {
   background(220);
   renderGrid();
-  // colorOverlay();
 
   // If winCheck() === true,
   // display the "You Win" text on the screen
@@ -37,7 +36,10 @@ function draw() {
     strokeWeight(2);
     text("You Win", width/2, height/2);
   }
+  colorOverlay();
 }
+
+
 
 // Function to create random grid
 function createGrid(){
@@ -75,6 +77,7 @@ function mousePressed(){
   let x = getCurrentX();
   let y = getCurrentY();
   
+
   if (mousePressed && keyCode === SHIFT && keyIsPressed){
     flip(x,y);
   }
@@ -101,20 +104,20 @@ function mousePressed(){
 }
 
 function getCurrentX(){
-  //determine current col of mouse position
+  //Determine current col of mouse position
   let constrainedX = constrain(mouseX, 0, width-1);
   return floor(constrainedX / squareSize);
 }
 
 function getCurrentY(){
-  //determine current row of mouse position
+  //Determine current row of mouse position
   let constrainedY = constrain(mouseY, 0, height-1);
   return floor(constrainedY / squareSize);
 }
 
 
 function flip(x,y){
-  //takes a tile @ x,y and inverts its value
+  //Takes a tile @ x,y and inverts its value
   if(grid[y][x] === 0){
     grid[y][x] = 255;
   }
@@ -125,7 +128,7 @@ function flip(x,y){
 }
 
 function renderGrid(){
-  // interpret the information in the 2D array, and draw
+  // Interpret the information in the 2D array, and draw
   // a grid of square on the screen to reflect it.
   for (let y = 0; y < rows; y++){
     for (let x = 0; x < cols; x++){
@@ -153,7 +156,7 @@ function winCheck(){
       }
     }
   }
-  // If count = the number of tiles, or count = -(number of tiles)
+  // If count === the number of tiles, or count === -(number of tiles)
   // Return true
   if (count === rows * cols || count === -(rows * cols)){
     return true;
@@ -165,16 +168,31 @@ function colorOverlay(){
   let x = getCurrentX();
   let y = getCurrentY();
 
+  fill(200, 6, 29, 150);
 
-  if (key === SHIFT && keyIsPressed){
-    if (grid[y][x] === 0){
-      grid[y][x] = color(128, 6, 29);
-      updatePixels();
-    }
-    else{
-      grid[y][x] = color(128, 106, 129);
-      updatePixels();
-    }
+  // If shift is pressed, overlay one tile only
+  if (keyCode === SHIFT && keyIsPressed){
+    square(x*squareSize, y*squareSize, squareSize);
   }
 
+
+  // If shift is not pressed and mode is an even number
+  // overlay a cross pattern.
+  else if (mode % 2 === 0){
+    square(x*squareSize, y*squareSize, squareSize);
+    square((x - 1)*squareSize, y*squareSize, squareSize);
+    square((x + 1)*squareSize, y*squareSize, squareSize);
+    square(x*squareSize, (y - 1)*squareSize, squareSize);
+    square(x*squareSize, (y + 1)*squareSize, squareSize);
+  }
+  
+
+  // If shift is not pressed and mode is an uneven number 
+  // overlay a square pattern
+  else if (mode % 2 !== 0){
+    square(x*squareSize, y*squareSize, squareSize);
+    square((x + 1)*squareSize, y*squareSize, squareSize);
+    square(x*squareSize, (y + 1)*squareSize, squareSize);
+    square((x + 1)*squareSize, (y + 1)*squareSize, squareSize);
+  }
 }
