@@ -12,10 +12,16 @@ async function setup() {
 }
 
 function colorEffect(){
-  for ( let y = 0; y < height; y+=4){
-    for (let x = 0; x )
-    // Set green value to 0
-    pixels[i+1] = 0;  
+  // Double loop
+  for ( let y = 0; y < height; y+=1){
+    for (let x = 0; x < width; x +=1){
+    index = (height* y+ x)*4;
+
+    if ( x > width/ 2){
+      // Set green value to 0
+      pixels[index+1] = 0;
+    }
+    }
   }
 }
 
