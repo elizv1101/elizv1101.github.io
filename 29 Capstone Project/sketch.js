@@ -9,6 +9,13 @@ let myBranchLeft;
 let RB;
 let LB;
 
+let char_01;
+let char_11;
+let char_12;
+let char_13;
+let char_14;
+let char_15;
+let char_16;
 
 let branches=[];
 
@@ -18,8 +25,16 @@ async function setup() {
   pixelDensity(1);
   myBG1 = await loadImage("assets/bg.png");
   myTrunk = await loadImage("assets/trunk.png");
-  myBranchRight= await loadImage("assets/branchright.png")
-  myBranchLeft= await loadImage("assets/branchleft.png")
+  myBranchRight = await loadImage("assets/branchright.png")
+  myBranchLeft = await loadImage("assets/branchleft.png")
+  char_01 =await loadImage("assets/01.png");
+  char_11 =await loadImage("assets/11.png");
+  char_12 =await loadImage("assets/12.png");
+  char_13 =await loadImage("assets/13.png");
+  char_14 =await loadImage("assets/14.png");
+  char_15 =await loadImage("assets/15.png");
+  char_16 =await loadImage("assets/16.png");
+
 
   for (let i = 0; i< 2; i++){
     let r = random(0, 1);
@@ -47,7 +62,8 @@ function draw() {
   image(myBG1, 0, 0)
   image(myTrunk, width/2 -100, height/2 + 50);   // The height of the tree block is 206
   
-  
+  image(char_01, 150, 458);
+
   for (let b of branches){
     b.display();
   }
@@ -76,3 +92,4 @@ class BranchLeft{
   }
 }
 
+// lerp (original_pos, new_pos, change)
