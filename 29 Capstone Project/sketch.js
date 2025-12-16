@@ -9,6 +9,7 @@ let myBranchLeft;
 let RB;
 let LB;
 
+let costumes = [];
 let char_01;
 let char_11;
 let char_12;
@@ -27,13 +28,13 @@ async function setup() {
   myTrunk = await loadImage("assets/trunk.png");
   myBranchRight = await loadImage("assets/branchright.png")
   myBranchLeft = await loadImage("assets/branchleft.png")
-  char_01 =await loadImage("assets/01.png");
-  char_11 =await loadImage("assets/11.png");
-  char_12 =await loadImage("assets/12.png");
-  char_13 =await loadImage("assets/13.png");
-  char_14 =await loadImage("assets/14.png");
-  char_15 =await loadImage("assets/15.png");
-  char_16 =await loadImage("assets/16.png");
+  costumes.push(await loadImage("assets/01.png"));
+  costumes.push(await loadImage("assets/11.png"));
+  costumes.push(await loadImage("assets/12.png"));
+  costumes.push(await loadImage("assets/13.png"));
+  costumes.push(await loadImage("assets/14.png"));
+  costumes.push(await loadImage("assets/15.png"));
+  costumes.push(await loadImage("assets/16.png"));
 
 
   for (let i = 0; i< 2; i++){
@@ -62,12 +63,25 @@ function draw() {
   image(myBG1, 0, 0)
   image(myTrunk, width/2 -100, height/2 + 50);   // The height of the tree block is 206
   
-  image(char_01, 150, 458);
 
   for (let b of branches){
     b.display();
   }
   
+  if (mouseIsPressed && mouseX < width/2){
+    for (let i = 1; i < 7; i++){
+      for (let frameCount =0; frameCount <= 3000; frameCount++){
+        if (frameCount % 50 === 0){
+          image(costumes[i], 150, 458);
+        }
+      }
+    }
+  }
+  else{
+    image(costumes[0], 150, 458);
+  }
+  
+
 }
 
 class BranchRight{
