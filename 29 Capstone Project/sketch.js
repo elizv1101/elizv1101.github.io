@@ -8,16 +8,10 @@ let myBranchRight;
 let myBranchLeft;
 let RB;
 let LB;
+let action;
+let r;
 
 let costumes = [];
-let char_01;
-let char_11;
-let char_12;
-let char_13;
-let char_14;
-let char_15;
-let char_16;
-
 let branches=[];
 
 async function setup() {
@@ -29,16 +23,13 @@ async function setup() {
   myBranchRight = await loadImage("assets/branchright.png")
   myBranchLeft = await loadImage("assets/branchleft.png")
   costumes.push(await loadImage("assets/01.png"));
+  costumes.push(await loadImage("assets/01R.png"));
   costumes.push(await loadImage("assets/11.png"));
-  costumes.push(await loadImage("assets/12.png"));
-  costumes.push(await loadImage("assets/13.png"));
-  costumes.push(await loadImage("assets/14.png"));
-  costumes.push(await loadImage("assets/15.png"));
-  costumes.push(await loadImage("assets/16.png"));
+  costumes.push(await loadImage("assets/11R.png"));
 
 
   for (let i = 0; i< 2; i++){
-    let r = random(0, 1);
+    r = random(0, 1);
     if (r <= 0.5){
       if (i === 0){
         branches.push(new BranchRight(width/2 -37, height/2 - 150));
@@ -69,19 +60,21 @@ function draw() {
   }
   
   if (mouseIsPressed && mouseX < width/2){
-    for (let i = 1; i < 7; i++){
-      for (let frameCount =0; frameCount <= 3000; frameCount++){
-        if (frameCount % 50 === 0){
-          image(costumes[i], 150, 458);
-        }
-      }
-    }
+    image(costumes[2], 162, 458);
+    action = true;
+  }
+  else if (mouseIsPressed && mouseX > width/2){
+    image(costumes[3], 370, 475);
+    action = true;
+  }
+  else if ( !mouseIsPressed && mouseX < width/2){
+    image(costumes[0], 150, 458);
+    action = false;
   }
   else{
-    image(costumes[0], 150, 458);
+    image(costumes[1], 400, 458);
+    action = false;
   }
-  
-
 }
 
 class BranchRight{
@@ -106,4 +99,5 @@ class BranchLeft{
   }
 }
 
+// branches.splice(pos,1);
 // lerp (original_pos, new_pos, change)
