@@ -14,10 +14,14 @@ let r;
 let costumes = [];
 let branches=[];
 
+
+
 async function setup() {
   rectMode(CORNER);
   createCanvas(700, 700);
   pixelDensity(1);
+
+  // Load assets
   myBG1 = await loadImage("assets/bg.png");
   myTrunk = await loadImage("assets/trunk.png");
   myBranchRight = await loadImage("assets/branchright.png")
@@ -28,37 +32,54 @@ async function setup() {
   costumes.push(await loadImage("assets/11R.png"));
 
 
-  for (let i = 0; i< 2; i++){
-    r = random(0, 1);
-    if (r <= 0.5){
-      if (i === 0){
-        branches.push(new BranchRight(width/2 -37, height/2 - 150));
+  // Function to pick out the branches randomly 
+  // 3 branches are always displayed 
+  while( branches.length < 3){
+    for (let i = 0; i< 3; i++){
+      r = random(0, 1);
+      if (r <= 0.5){
+        if (i === 0){
+          branches.push(new BranchRight(width/2 -37, height/2));
+        }
+        else if (i === 1){
+          branches.push(new BranchRight(width/2 -37, height/2 - 175));
+        }
+        else if (i === 2){
+          branches.push(new BranchRight(width/2 -37, height/2 - 350));
+        }
       }
       else{
-        branches.push(new BranchRight(width/2 -37, height/2 - 350));
+        if (i ===0){
+          branches.push(new BranchLeft(width/2 - 163, height/2));
+        }
+        else if (i === 1){
+          branches.push(new BranchLeft(width/2 -163, height/2 - 175));
+        }
+        else if (i === 2){
+          branches.push(new BranchLeft(width/2 -163, height/2 - 350));
+        }
       }
     }
-    else{
-      if (i ===0){
-        branches.push(new BranchLeft(width/2 - 163, height/2 - 150));
-      }
-      else{
-        branches.push(new BranchLeft(width/2 - 163, height/2 - 350));
-      }
-    }
+  }
+
+  for (let b of branches){
+    b.action();
   }
 }
 
 function draw() {
   background(130);
   image(myBG1, 0, 0)
-  image(myTrunk, width/2 -100, height/2 + 50);   // The height of the tree block is 206
+  image(myTrunk, width/2 -100, 50);  
   
 
   for (let b of branches){
     b.display();
+    b.action();
   }
   
+  // Display character and animation 
+  // when mouse is clicked
   if (mouseIsPressed && mouseX < width/2){
     image(costumes[2], 162, 458);
     action = true;
@@ -77,6 +98,8 @@ function draw() {
   }
 }
 
+
+// Classes for two types of branches 
 class BranchRight{
   constructor(x, y){
     this.x = x; 
@@ -85,6 +108,12 @@ class BranchRight{
 
   display(){
     image(myBranchRight, this.x, this.y);
+  }
+
+  action(){
+    if (action === true && branches[0] === BranchRight(width/2 -37, height/2)){
+      branches.splice(0, 1);
+    }
   }
 }
 
@@ -96,6 +125,12 @@ class BranchLeft{
 
   display(){
     image(myBranchLeft, this.x, this.y);
+  }
+
+  action(){
+    if (action === true && branches[0] === BranchLeft(width/2 - 163, height/2)){
+      branches.splice(0, 1);
+    }
   }
 }
 
