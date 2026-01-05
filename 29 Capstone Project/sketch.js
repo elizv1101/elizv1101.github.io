@@ -8,7 +8,7 @@ let myBranchRight;
 let myBranchLeft;
 let RB;
 let LB;
-let action;
+let hit;
 let r;
 
 let costumes = [];
@@ -61,10 +61,6 @@ async function setup() {
       }
     }
   }
-
-  for (let b of branches){
-    b.action();
-  }
 }
 
 function draw() {
@@ -75,28 +71,38 @@ function draw() {
 
   for (let b of branches){
     b.display();
-    b.action();
   }
   
   // Display character and animation 
   // when mouse is clicked
   if (mouseIsPressed && mouseX < width/2){
     image(costumes[2], 162, 458);
-    action = true;
+    hit = true;
   }
   else if (mouseIsPressed && mouseX > width/2){
     image(costumes[3], 370, 475);
-    action = true;
+    hit = true;
   }
   else if ( !mouseIsPressed && mouseX < width/2){
     image(costumes[0], 150, 458);
-    action = false;
+    hit = false;
   }
   else{
     image(costumes[1], 400, 458);
-    action = false;
+    hit = false;
   }
+
+  
 }
+
+function mouseClicked(){
+  if (hit === true){
+    branches.shift();
+    branches[0].y + 175;
+    branches[1].y + 175;
+  } 
+}
+  
 
 
 // Classes for two types of branches 
@@ -110,11 +116,6 @@ class BranchRight{
     image(myBranchRight, this.x, this.y);
   }
 
-  action(){
-    if (action === true && branches[0] === BranchRight(width/2 -37, height/2)){
-      branches.splice(0, 1);
-    }
-  }
 }
 
 class BranchLeft{
@@ -126,13 +127,4 @@ class BranchLeft{
   display(){
     image(myBranchLeft, this.x, this.y);
   }
-
-  action(){
-    if (action === true && branches[0] === BranchLeft(width/2 - 163, height/2)){
-      branches.splice(0, 1);
-    }
-  }
 }
-
-// branches.splice(pos,1);
-// lerp (original_pos, new_pos, change)
