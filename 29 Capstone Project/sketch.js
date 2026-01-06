@@ -8,8 +8,10 @@ let myBranchRight;
 let myBranchLeft;
 let RB;
 let LB;
-let hit;
+let hit = false;
 let r;
+let lose = false;
+let count = 0;
 
 let costumes = [];
 let branches=[];
@@ -34,6 +36,114 @@ async function setup() {
 
   // Function to pick out the branches randomly 
   // 3 branches are always displayed 
+  makeBranch();
+  
+}
+
+function draw() {
+  background(130);
+  image(myBG1, 0, 0)
+  image(myTrunk, width/2 -100, 50);  
+  
+
+  for (let b of branches){
+    b.display();
+  }
+  
+  // Display character and animation 
+  // when mouse is clicked
+  if (hit === true && mouseX < width/2){
+    image(costumes[2], 162, 458);
+    
+  }
+  else if (hit === true && mouseX > width/2){
+    image(costumes[3], 370, 475);
+    
+  }
+  else if ( hit === false && mouseX < width/2){
+    image(costumes[0], 150, 458);
+    
+  }
+  else{
+    image(costumes[1], 400, 458);
+    
+  }
+if (lose === true){
+    text("GAME OVER", width/2 - 30, height/2, width/2 + 30, height/2);
+    textAlign(CENTER);
+    textSize(30);
+    textWidth(2);
+  }
+  
+}
+
+function mouseClicked(){
+  if (hit === true && branches[0] instanceof BranchRight && mouseX < width/2){
+    branches.splice(0,1);
+    branches[0].y += 175;
+    branches[1].y += 175;
+    lose = false;
+  } 
+  else if(hit === true && branches[0] instanceof BranchRight && mouseX > width/2){
+    branches.splice(0,1);
+    branches[0].y += 175;
+    branches[1].y += 175;
+    lose = true;
+  }
+
+  if (hit === true && branches[0] instanceof BranchLeft && mouseX > width/2){
+    branches.splice(0,1);
+    branches[0].y += 175;
+    branches[1].y += 175;
+    lose = false;
+  } 
+  else if (hit === true && branches[0] instanceof BranchLeft && mouseX < width/2) {
+    branches.splice(0,1);
+    branches[0].y += 175;
+    branches[1].y += 175;
+    lose = true;
+  }
+
+
+
+
+  if ( lose === false){
+    if (mouseIsPressed){
+    hit = true;
+    count += 1;
+    }
+    else{
+    hit = false;
+    }
+  }
+}
+ 
+
+// Classes for two types of branches 
+class BranchRight{
+  constructor(x, y){
+    this.x = x; 
+    this.y = y;
+  }
+
+  display(){
+    image(myBranchRight, this.x, this.y);
+  }
+
+}
+
+class BranchLeft{
+  constructor(x, y){
+    this.x = x; 
+    this.y = y;
+  }
+
+  display(){
+    image(myBranchLeft, this.x, this.y);
+  }
+}
+
+function makeBranch(){
   while( branches.length < 3){
     for (let i = 0; i< 3; i++){
       r = random(0, 1);
@@ -60,71 +170,5 @@ async function setup() {
         }
       }
     }
-  }
-}
-
-function draw() {
-  background(130);
-  image(myBG1, 0, 0)
-  image(myTrunk, width/2 -100, 50);  
-  
-
-  for (let b of branches){
-    b.display();
-  }
-  
-  // Display character and animation 
-  // when mouse is clicked
-  if (mouseIsPressed && mouseX < width/2){
-    image(costumes[2], 162, 458);
-    hit = true;
-  }
-  else if (mouseIsPressed && mouseX > width/2){
-    image(costumes[3], 370, 475);
-    hit = true;
-  }
-  else if ( !mouseIsPressed && mouseX < width/2){
-    image(costumes[0], 150, 458);
-    hit = false;
-  }
-  else{
-    image(costumes[1], 400, 458);
-    hit = false;
-  }
-
-  
-}
-
-function mouseClicked(){
-  if (hit === true){
-    branches.shift();
-    branches[0].y + 175;
-    branches[1].y + 175;
-  } 
-}
-  
-
-
-// Classes for two types of branches 
-class BranchRight{
-  constructor(x, y){
-    this.x = x; 
-    this.y = y;
-  }
-
-  display(){
-    image(myBranchRight, this.x, this.y);
-  }
-
-}
-
-class BranchLeft{
-  constructor(x, y){
-    this.x = x; 
-    this.y = y;
-  }
-
-  display(){
-    image(myBranchLeft, this.x, this.y);
   }
 }
