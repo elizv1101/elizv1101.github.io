@@ -69,43 +69,41 @@ function draw() {
     
   }
 if (lose === true){
-    text("GAME OVER", width/2 - 30, height/2, width/2 + 30, height/2);
+    fill(255, 20, 40);
+    text("GAME OVER", width/2 - 170, height/2 - 100, width/2 , height/2 - 100);
     textAlign(CENTER);
-    textSize(30);
-    textWidth(2);
+    textSize(100);
+    textWidth(20);
   }
   
 }
 
 function mouseClicked(){
-  if (hit === true && branches[0] instanceof BranchRight && mouseX < width/2){
+  if (branches[0] instanceof BranchRight && mouseX < width/2){
     branches.splice(0,1);
     branches[0].y += 175;
     branches[1].y += 175;
     lose = false;
   } 
-  else if(hit === true && branches[0] instanceof BranchRight && mouseX > width/2){
+  else if(branches[0] instanceof BranchRight && mouseX > width/2){
     branches.splice(0,1);
     branches[0].y += 175;
     branches[1].y += 175;
     lose = true;
   }
 
-  if (hit === true && branches[0] instanceof BranchLeft && mouseX > width/2){
+  if (branches[0] instanceof BranchLeft && mouseX > width/2){
     branches.splice(0,1);
     branches[0].y += 175;
     branches[1].y += 175;
     lose = false;
   } 
-  else if (hit === true && branches[0] instanceof BranchLeft && mouseX < width/2) {
+  else if (branches[0] instanceof BranchLeft && mouseX < width/2) {
     branches.splice(0,1);
     branches[0].y += 175;
     branches[1].y += 175;
     lose = true;
   }
-
-
-
 
   if ( lose === false){
     if (mouseIsPressed){
@@ -172,3 +170,14 @@ function makeBranch(){
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+// 0 1 1 2 4 5 8 9 9 11
