@@ -37,7 +37,6 @@ async function setup() {
   // Function to pick out the branches randomly 
   // 3 branches are always displayed 
   makeBranch();
-  
 }
 
 function draw() {
@@ -54,11 +53,11 @@ function draw() {
   // when mouse is clicked
   if (hit === true && mouseX < width/2){
     image(costumes[2], 162, 458);
-    
+    hit = false;
   }
   else if (hit === true && mouseX > width/2){
     image(costumes[3], 370, 475);
-    
+    hit = false;
   }
   else if ( hit === false && mouseX < width/2){
     image(costumes[0], 150, 458);
@@ -72,49 +71,50 @@ if (lose === true){
     fill(255, 20, 40);
     text("GAME OVER", width/2 - 170, height/2 - 100, width/2 , height/2 - 100);
     textAlign(CENTER);
-    textSize(100);
+    textSize(300);
     textWidth(20);
   }
-  
+  text(count, width/2 - 15, 60, width/2, 60);
+  textSize(50);
+  textWidth(10);
 }
 
 function mouseClicked(){
   if (branches[0] instanceof BranchRight && mouseX < width/2){
     branches.splice(0,1);
+    singleBranch();
     branches[0].y += 175;
     branches[1].y += 175;
     lose = false;
   } 
   else if(branches[0] instanceof BranchRight && mouseX > width/2){
     branches.splice(0,1);
+    singleBranch();
     branches[0].y += 175;
     branches[1].y += 175;
     lose = true;
   }
 
-  if (branches[0] instanceof BranchLeft && mouseX > width/2){
+  else if (branches[0] instanceof BranchLeft && mouseX > width/2){
     branches.splice(0,1);
+    singleBranch();
     branches[0].y += 175;
     branches[1].y += 175;
     lose = false;
   } 
   else if (branches[0] instanceof BranchLeft && mouseX < width/2) {
     branches.splice(0,1);
+    singleBranch();
     branches[0].y += 175;
     branches[1].y += 175;
     lose = true;
   }
 
   if ( lose === false){
-    if (mouseIsPressed){
     hit = true;
     count += 1;
-    }
-    else{
-    hit = false;
-    }
   }
-}
+  }
  
 
 // Classes for two types of branches 
@@ -171,6 +171,17 @@ function makeBranch(){
   }
 }
 
+function singleBranch(){
+  r = random(0, 1);
+      if (r <= 0.5){
+       
+        branches.push(new BranchRight(width/2 -37, height/2 - 350));
+      }
+      else{
+        
+        branches.push(new BranchLeft(width/2 -163, height/2 - 350));
+      }
+}
 
 
 
