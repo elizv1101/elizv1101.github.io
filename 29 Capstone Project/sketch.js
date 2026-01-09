@@ -12,6 +12,8 @@ let hit = false;
 let r;
 let lose = false;
 let count = 0;
+let myStartPage;
+let starting = true;
 
 let costumes = [];
 let branches=[];
@@ -32,17 +34,31 @@ async function setup() {
   costumes.push(await loadImage("assets/01R.png"));
   costumes.push(await loadImage("assets/11.png"));
   costumes.push(await loadImage("assets/11R.png"));
+  myStartPage = await loadImage("assets/startpage.png");
 
 
   // Function to pick out the branches randomly 
   // 3 branches are always displayed 
-  makeBranch();
+  if (starting === false){
+    makeBranch();
+  }
+
+  if(keyCode === BACKSPACE && keyIsPressed){
+    starting === false; 
+  }
+  
 }
 
 function draw() {
   background(130);
-  image(myBG1, 0, 0)
-  image(myTrunk, width/2 -100, 50);  
+  if (starting === true){
+    image(myStartPage, 0, 0);
+  }
+  else{
+    image(myBG1, 0, 0)
+    image(myTrunk, width/2 -100, 50);   
+  }
+  
   
 
   for (let b of branches){
@@ -51,32 +67,39 @@ function draw() {
   
   // Display character and animation 
   // when mouse is clicked
-  if (hit === true && mouseX < width/2){
+  if (hit === true && mouseX < width/2 && starting === false){
     image(costumes[2], 162, 458);
     hit = false;
   }
-  else if (hit === true && mouseX > width/2){
+  else if (hit === true && mouseX > width/2 && starting === false){
     image(costumes[3], 370, 475);
     hit = false;
   }
-  else if ( hit === false && mouseX < width/2){
+  else if ( hit === false && mouseX < width/2 && starting == false){
     image(costumes[0], 150, 458);
     
   }
-  else{
+  else if (hit === false && mouseX > width/2 && starting == false ){
     image(costumes[1], 400, 458);
     
   }
-if (lose === true){
+if (lose === true && starting === false){
     fill(255, 20, 40);
     text("GAME OVER", width/2 - 170, height/2 - 100, width/2 , height/2 - 100);
     textAlign(CENTER);
     textSize(300);
-    textWidth(20);
+    textWidth(200);
+
+    noStroke();
+    fill(255, 255, 0);
+    rect(width/2 - 200, height/2 -100, 400, 200);
   }
+if (starting === false){
   text(count, width/2 - 15, 60, width/2, 60);
   textSize(50);
   textWidth(10);
+}
+  
 }
 
 function mouseClicked(){
@@ -182,13 +205,3 @@ function singleBranch(){
         branches.push(new BranchLeft(width/2 -163, height/2 - 350));
       }
 }
-
-
-
-
-
-
-
-
-
-// 0 1 1 2 4 5 8 9 9 11
