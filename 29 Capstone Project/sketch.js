@@ -14,6 +14,8 @@ let lose = false;
 let count = 0;
 let myStartPage;
 let starting = true;
+let mySound;
+let reset;
 
 let costumes = [];
 let branches=[];
@@ -35,19 +37,15 @@ async function setup() {
   costumes.push(await loadImage("assets/11.png"));
   costumes.push(await loadImage("assets/11R.png"));
   myStartPage = await loadImage("assets/startpage.png");
-
+  mySound = loadSound("assets/gameSound.mp3");
 
   // Function to pick out the branches randomly 
   // 3 branches are always displayed 
-  if (starting === false){
-    makeBranch();
-  }
+  reset =new ResetButton(width/2 - 35, height/2 +80, 100, 50);
+  makeBranch();
 
-  if(keyCode === BACKSPACE && keyIsPressed){
-    starting === false; 
-  }
-  
 }
+
 
 function draw() {
   background(130);
@@ -56,90 +54,104 @@ function draw() {
   }
   else{
     image(myBG1, 0, 0)
-    image(myTrunk, width/2 -100, 50);   
-  }
-  
-  
-
-  for (let b of branches){
-    b.display();
-  }
-  
-  // Display character and animation 
-  // when mouse is clicked
-  if (hit === true && mouseX < width/2 && starting === false){
-    image(costumes[2], 162, 458);
-    hit = false;
-  }
-  else if (hit === true && mouseX > width/2 && starting === false){
-    image(costumes[3], 370, 475);
-    hit = false;
-  }
-  else if ( hit === false && mouseX < width/2 && starting == false){
-    image(costumes[0], 150, 458);
+    image(myTrunk, width/2 -100, 50); 
+    for (let b of branches){
+      b.display();
+    }
     
-  }
-  else if (hit === false && mouseX > width/2 && starting == false ){
-    image(costumes[1], 400, 458);
     
-  }
-if (lose === true && starting === false){
-    fill(255, 20, 40);
-    text("GAME OVER", width/2 - 170, height/2 - 100, width/2 , height/2 - 100);
-    textAlign(CENTER);
-    textSize(300);
-    textWidth(200);
+    // Display character and animation 
+    // when mouse is clicked
+    if (hit === true && mouseX < width/2 && starting === false){
+      image(costumes[2], 162, 458);
+      hit = false;
+    }
+    else if (hit === true && mouseX > width/2 && starting === false){
+      image(costumes[3], 370, 475);
+      hit = false;
+    }
+    else if ( hit === false && mouseX < width/2 && starting == false){
+      image(costumes[0], 150, 458);
+      
+    }
+    else if (hit === false && mouseX > width/2 && starting == false ){
+      image(costumes[1], 400, 458);
+      
+    }
+  if (lose === true && starting === false){
+  
+      noStroke();
+      fill(255, 255, 0);
+      rect(width/2 - 200, height/2 -100, 400, 180);
 
-    noStroke();
-    fill(255, 255, 0);
-    rect(width/2 - 200, height/2 -100, 400, 200);
+      fill(255, 20, 40);
+      text("GAME OVER", width/2 - 170, height/2 - 70, width/2 , height/2 - 70);
+      text("Score: " + count, width/2 -170, height /2, width/2, height/2 - 70);
+      textAlign(CENTER);
+      textSize(300);
+      textWidth(200);
+
+      
+     
+      reset.display();
+      reset.action();
+
+    }
+  if (starting === false && lose === false){
+    fill(0, 0, 0);
+    textSize(50);
+    textWidth(10);
+    text(count, width/2 - 15, 60, width/2, 60);
   }
-if (starting === false){
-  text(count, width/2 - 15, 60, width/2, 60);
-  textSize(50);
-  textWidth(10);
+  }
+
+if(keyCode === 32 && keyIsPressed){
+  starting = false; 
 }
-  
 }
 
 function mouseClicked(){
-  if (branches[0] instanceof BranchRight && mouseX < width/2){
-    branches.splice(0,1);
-    singleBranch();
-    branches[0].y += 175;
-    branches[1].y += 175;
-    lose = false;
-  } 
-  else if(branches[0] instanceof BranchRight && mouseX > width/2){
-    branches.splice(0,1);
-    singleBranch();
-    branches[0].y += 175;
-    branches[1].y += 175;
-    lose = true;
-  }
+  if (starting === false && lose === false){
+    if (branches[0] instanceof BranchRight && mouseX < width/2 && starting === false){
+      branches.splice(0,1);
+      singleBranch();
+      branches[0].y += 175;
+      branches[1].y += 175;
+      lose = false;
+    } 
+    else if(branches[0] instanceof BranchRight && mouseX > width/2 && starting === false){
+      branches.splice(0,1);
+      singleBranch();
+      branches[0].y += 175;
+      branches[1].y += 175;
+      lose = true;
+    }
 
-  else if (branches[0] instanceof BranchLeft && mouseX > width/2){
-    branches.splice(0,1);
-    singleBranch();
-    branches[0].y += 175;
-    branches[1].y += 175;
-    lose = false;
-  } 
-  else if (branches[0] instanceof BranchLeft && mouseX < width/2) {
-    branches.splice(0,1);
-    singleBranch();
-    branches[0].y += 175;
-    branches[1].y += 175;
-    lose = true;
-  }
-
-  if ( lose === false){
+    else if (branches[0] instanceof BranchLeft && mouseX > width/2 && starting === false){
+      branches.splice(0,1);
+      singleBranch();
+      branches[0].y += 175;
+      branches[1].y += 175;
+      lose = false;
+    } 
+    else if (branches[0] instanceof BranchLeft && mouseX < width/2 && starting === false) {
+      branches.splice(0,1);
+      singleBranch();
+      branches[0].y += 175;
+      branches[1].y += 175;
+      lose = true;
+    }
     hit = true;
     count += 1;
-  }
+    }
   }
  
-
+function keyIsPressed(){
+  if (starting === false && lose === false){
+    mySound.play();
+  }
+  
+}
 // Classes for two types of branches 
 class BranchRight{
   constructor(x, y){
@@ -161,6 +173,36 @@ class BranchLeft{
 
   display(){
     image(myBranchLeft, this.x, this.y);
+  }
+}
+
+class ResetButton{
+  constructor(x, y, w, h){
+    this.x = x;
+    this.y = y;
+    this.w = w,
+    this.h = h;
+  }
+
+  display(){
+    fill( 255, 255, 255);
+    rect(this.x, this.y, this.w, this.h)
+
+    fill(0, 0, 0);
+    textSize(30);
+    text("Again", this.x -125 , this.y + 10, this.x + 35, this.y + 10);
+  }
+
+  action(){
+    if (mouseIsPressed && mouseX >= this.x - this.w/ 2 && mouseX <= this.x + this.w/ 2
+      && mouseY >= this.y - this.h/2 && mouseY <= this.y + this.h/2){
+      hit = false;
+      lose = false;
+      count = 0;
+      starting = true;
+      branches.splice(0);
+      makeBranch();
+    }
   }
 }
 
