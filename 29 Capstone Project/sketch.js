@@ -14,8 +14,9 @@ let lose = false;
 let count = 0;
 let myStartPage;
 let starting = true;
-let mySound;
 let reset;
+let highestScore = 0;
+
 
 let costumes = [];
 let branches=[];
@@ -37,13 +38,15 @@ async function setup() {
   costumes.push(await loadImage("assets/11.png"));
   costumes.push(await loadImage("assets/11R.png"));
   myStartPage = await loadImage("assets/startpage.png");
-  mySound = loadSound("assets/gameSound.mp3");
-
+  
   // Function to pick out the branches randomly 
   // 3 branches are always displayed 
   reset =new ResetButton(width/2 - 35, height/2 +80, 100, 50);
   makeBranch();
 
+  if (count > highestScore){
+    highestScore = count;
+  }
 }
 
 
@@ -51,6 +54,10 @@ function draw() {
   background(130);
   if (starting === true){
     image(myStartPage, 0, 0);
+
+    fill(0, 0, 0);
+    textSize(300);
+    text("Highest Score: " + highestScore, 0, height, width, height);
   }
   else{
     image(myBG1, 0, 0)
@@ -101,13 +108,14 @@ function draw() {
     fill(0, 0, 0);
     textSize(50);
     textWidth(10);
-    text(count, width/2 - 15, 60, width/2, 60);
+    textAlign(CENTER)
+    text(count, width/2 - 170, 60, width/2, 60);
   }
   }
 
-if(keyCode === 32 && keyIsPressed){
-  starting = false; 
-}
+  if(keyCode === 32 && keyIsPressed){
+    starting = false; 
+  }
 }
 
 function mouseClicked(){
@@ -146,12 +154,7 @@ function mouseClicked(){
     }
   }
  
-function keyIsPressed(){
-  if (starting === false && lose === false){
-    mySound.play();
-  }
-  
-}
+
 // Classes for two types of branches 
 class BranchRight{
   constructor(x, y){
@@ -194,8 +197,8 @@ class ResetButton{
   }
 
   action(){
-    if (mouseIsPressed && mouseX >= this.x - this.w/ 2 && mouseX <= this.x + this.w/ 2
-      && mouseY >= this.y - this.h/2 && mouseY <= this.y + this.h/2){
+    if (mouseIsPressed && mouseX <= this.x + this.w && mouseX >=  this.x && 
+      mouseY <= this.y + this.h && mouseY >= this.y){
       hit = false;
       lose = false;
       count = 0;
