@@ -43,10 +43,6 @@ async function setup() {
   // 3 branches are always displayed 
   reset =new ResetButton(width/2 - 35, height/2 +80, 100, 50);
   makeBranch();
-
-  if (count > highestScore){
-    highestScore = count;
-  }
 }
 
 
@@ -55,9 +51,10 @@ function draw() {
   if (starting === true){
     image(myStartPage, 0, 0);
 
-    fill(0, 0, 0);
-    textSize(300);
-    text("Highest Score: " + highestScore, 0, height, width, height);
+    textAlign(CENTER);
+    stroke(0, 0, 0);
+    textSize(30);
+    text("Highest Score: " + highestScore, 130, 40);
   }
   else{
     image(myBG1, 0, 0)
@@ -115,6 +112,10 @@ function draw() {
 
   if(keyCode === 32 && keyIsPressed){
     starting = false; 
+  }
+
+  if (count > highestScore){
+    highestScore = count;
   }
 }
 
